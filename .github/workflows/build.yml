@@ -1,0 +1,24 @@
+# .github/workflows/build.yml
+name: Mac集群构建验证流水线
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build_task:
+    runs-on: macos-latest
+    steps:
+      - name: 绑定本地Mac CI集群算力
+        uses: local-mac-ci-cluster/local-mac-runner-action@v1
+
+      - name: 检出项目源码
+        uses: actions/checkout@v4
+
+      - name: 输出Runner机器标识
+        run: |
+          echo "当前执行Runner名称: $RUNNER_NAME"
+          echo "macOS系统版本: $(sw_vers -productVersion)"
+          echo "CPU架构: $(uname -m)"
+          echo "Xcode版本: $(xcodebuild -version | head -1)"
